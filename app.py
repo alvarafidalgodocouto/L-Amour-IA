@@ -13,7 +13,7 @@ st.write("OpenAI key carregada?", st.secrets.get("OPENAI_API_KEY") is not None)
 # --- Cliente OpenAI ---
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-# --- Configuração PayPal ---
+# --- Configuração PayPal (sandbox para testes) ---
 paypalrestsdk.configure({
     "mode": "sandbox",  # trocar para "live" em produção
     "client_id": st.secrets["PAYPAL_CLIENT_ID"],
@@ -29,7 +29,6 @@ def chat_response(prompt, system_prompt):
             {"role": "user", "content": prompt}
         ]
     )
-    # Corrigido para o novo formato da API
     return response.choices[0].message.content
 
 # --- Função para criar pagamento PayPal ---
@@ -38,8 +37,8 @@ def criar_pagamento(valor, descricao):
         "intent": "sale",
         "payer": {"payment_method": "paypal"},
         "redirect_urls": {
-            "return_url": "https://www.google.com",  # substituir pelo link de sucesso
-            "cancel_url": "https://www.google.com"   # substituir pelo link de cancelamento
+            "return_url": "https://example.com/success",  # link de sucesso
+            "cancel_url": "https://example.com/cancel"    # link de cancelamento
         },
         "transactions": [{
             "item_list": {
@@ -60,9 +59,11 @@ def criar_pagamento(valor, descricao):
     })
 
     if pagamento.create():
-        return pagamento.links[1].href  # link de aprovação
-    else:
-        return None
+        # link de aprovação do PayPal
+        for link in pagamento.links:
+            if link.rel == "approval_url":
+                return link.href
+    return None
 
 # --- UI ---
 st.title("💘 Conselhos Amorosos com IA")
