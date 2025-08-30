@@ -4,18 +4,23 @@ from PIL import Image
 import paypalrestsdk
 import uuid
 
-# Config inicial
+# --- Config Inicial ---
 st.set_page_config(page_title="App Conselhos Amorosos 💕", layout="wide")
 
+# --- Debug para verificar se a chave OpenAI está carregada ---
+st.write("OpenAI key carregada?", st.secrets.get("OPENAI_API_KEY") is not None)
+
+# --- Cliente OpenAI ---
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
+# --- Configuração PayPal ---
 paypalrestsdk.configure({
-    "mode": "sandbox",
+    "mode": "sandbox",  # trocar para "live" em produção
     "client_id": st.secrets["PAYPAL_CLIENT_ID"],
     "client_secret": st.secrets["PAYPAL_CLIENT_SECRET"]
 })
 
-# Função de chat com IA
-st.write("OpenAI key carregada?", st.secrets.get("OPENAI_API_KEY") is not None)
+# --- Função de Chat com IA ---
 def chat_response(prompt, system_prompt):
     response = client.chat.completions.create(
         model="gpt-4o-mini",
@@ -24,16 +29,17 @@ def chat_response(prompt, system_prompt):
             {"role": "user", "content": prompt}
         ]
     )
-    return response.choices[0].message["content"]
+    # Corrigido para o novo formato da API
+    return response.choices[0].message.content
 
-# Função para criar pagamento PayPal
+# --- Função para criar pagamento PayPal ---
 def criar_pagamento(valor, descricao):
     pagamento = paypalrestsdk.Payment({
         "intent": "sale",
         "payer": {"payment_method": "paypal"},
         "redirect_urls": {
-            "return_url": "https://www.google.com",
-            "cancel_url": "https://www.google.com"
+            "return_url": "https://www.google.com",  # substituir pelo link de sucesso
+            "cancel_url": "https://www.google.com"   # substituir pelo link de cancelamento
         },
         "transactions": [{
             "item_list": {
@@ -54,14 +60,11 @@ def criar_pagamento(valor, descricao):
     })
 
     if pagamento.create():
-        for link in pagamento.links:
-            if link.rel == "approval_url":
-                return link.href
-        return None
+        return pagamento.links[1].href  # link de aprovação
     else:
         return None
 
-# UI
+# --- UI ---
 st.title("💘 Conselhos Amorosos com IA")
 
 tab1, tab2, tab3, tab4 = st.tabs([
