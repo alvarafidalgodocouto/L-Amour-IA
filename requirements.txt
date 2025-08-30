@@ -1,4 +1,4 @@
-streamlit==1.27.0
-openai==1.29.0
-paypalrestsdk==1.13.3
-Pillow==10.0.0
+streamlit
+openai
+paypalrestsdk
+Pillow
