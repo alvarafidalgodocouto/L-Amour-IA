@@ -12,7 +12,7 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # Configuração PayPal
 paypalrestsdk.configure({
-    "mode": "sandbox",  # troca para "live" quando for produção
+    "mode": st.secrets["PAYPAL_MODE"],  # "sandbox" ou "live"
     "client_id": st.secrets["PAYPAL_CLIENT_ID"],
     "client_secret": st.secrets["PAYPAL_CLIENT_SECRET"]
 })
