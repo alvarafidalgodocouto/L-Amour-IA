@@ -15,7 +15,7 @@ paypalrestsdk.configure({
 })
 
 # Função de chat com IA
-st.write("OpenAI key carregada?", "OPENAI_API_KEY" in st.secrets)
+st.write("OpenAI key carregada?", st.secrets.get("OPENAI_API_KEY") is not None)
 def chat_response(prompt, system_prompt):
     response = client.chat.completions.create(
         model="gpt-4o-mini",
