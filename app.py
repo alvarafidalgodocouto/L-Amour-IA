@@ -8,13 +8,10 @@ import uuid
 st.set_page_config(page_title="App Conselhos Amorosos 💕", layout="wide")
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-
-
-# Configuração PayPal
 paypalrestsdk.configure({
-    "mode": "sandbox",  # troca para "live" quando for produção
-    "client_id": st.secrets["AboCNhIjYZQe6PLsOfmG0EUVVb3xxHRleRfjYxif4_U0yyOTQUV-5a_FHa3-cQTO2Q9iR8jJ8bfvn9fd"],
-    "client_secret": st.secrets["ED0CKShQUjhfJ60ipc_WZT7na74XHDIIubfjw4fKe1EsD5n56Oc983f15i7rgWshuYzrb-ntUxE2z5_7"]
+    "mode": "sandbox",
+    "client_id": st.secrets["PAYPAL_CLIENT_ID"],
+    "client_secret": st.secrets["PAYPAL_CLIENT_SECRET"]
 })
 
 # Função de chat com IA
