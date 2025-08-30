@@ -7,8 +7,8 @@ import uuid
 # Config inicial
 st.set_page_config(page_title="App Conselhos Amorosos 💕", layout="wide")
 
-# Cliente OpenAI
-client = OpenAI(api_key=st.secrets["sk-...cokA"])
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
 
 # Configuração PayPal
 paypalrestsdk.configure({
