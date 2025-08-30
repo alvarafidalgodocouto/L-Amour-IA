@@ -1,11 +1,12 @@
-<script 
-  src="https://www.paypal.com/sdk/js?client-id=BAAu6A13xlYvny0xYaqmU8-ygiMQZWIcRlZeNPdtVE5x1G62MLPmq255iZrmgF4ZRNZDcuinn9DfurjnrE&components=hosted-buttons&disable-funding=venmo&currency=EUR">
-</script>
+
 import streamlit as st
 from openai import OpenAI
 from PIL import Image
 import paypalrestsdk
 import uuid
+<script 
+  src="https://www.paypal.com/sdk/js?client-id=BAAu6A13xlYvny0xYaqmU8-ygiMQZWIcRlZeNPdtVE5x1G62MLPmq255iZrmgF4ZRNZDcuinn9DfurjnrE&components=hosted-buttons&disable-funding=venmo&currency=EUR">
+</script>
 
 # Config
 st.set_page_config(page_title="Love Advice AI App 💕", layout="wide")
