@@ -1,0 +1,12 @@
+# Streamlit
+streamlit==1.30.0
+
+# OpenAI
+openai==1.8.5
+
+# Manipulação de imagens
+Pillow==10.0.0
+
+# PayPal SDK
+paypalrestsdk==1.14.0
+
