@@ -1,4 +1,3 @@
-
 import streamlit as st
 from openai import OpenAI
 from PIL import Image
@@ -20,12 +19,32 @@ paypalrestsdk.configure({
 
 # --- Funções --- #
 
-def chat_response(prompt, system_prompt):
+def chat_response(prompt, system_prompt, lang="pt"):
+    """Gera resposta do chatbot, traduzindo se necessário"""
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}
+        ]
+    )
+    text = response.choices[0].message.content
+
+    # Traduzir apenas se idioma != português
+    if lang != "pt":
+        text = translate_text(text, lang)
+
+    return text
+
+def translate_text(text, target_lang):
+    """Traduz texto para o idioma escolhido (rápido e leve)"""
+    if target_lang == "pt":
+        return text
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": f"És um tradutor profissional. Traduz para {target_lang} sem perder o tom emocional."},
+            {"role": "user", "content": text}
         ]
     )
     return response.choices[0].message.content
@@ -57,6 +76,12 @@ def criar_pagamento(valor, descricao):
 # --- Interface --- #
 
 st.title("💘 Conselhos Amorosos com IA")
+
+# Seletor de idioma
+idiomas = {"Português": "pt", "Inglês": "en", "Espanhol": "es", "Francês": "fr"}
+lang_choice = st.sidebar.selectbox("🌍 Escolhe o idioma:", list(idiomas.keys()))
+st.session_state["lang"] = idiomas[lang_choice]
+
 tab1, tab2, tab3, tab4 = st.tabs([
     "Conselhos Amorosos",
     "Sugestões de Respostas",
@@ -72,9 +97,11 @@ with tab1:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
     if user_input := st.chat_input("Partilha o que sentes..."):
+        # traduz input do user para português se necessário
+        prompt = translate_text(user_input, "pt") if st.session_state["lang"] != "pt" else user_input
         st.session_state.chat1.append({"role": "user", "content": user_input})
         with st.chat_message("user"): st.markdown(user_input)
-        response = chat_response(user_input, "És um terapeuta empático que dá conselhos amorosos com humanidade.")
+        response = chat_response(prompt, "És um terapeuta empático que dá conselhos amorosos com humanidade.", st.session_state["lang"])
         st.session_state.chat1.append({"role": "assistant", "content": response})
         with st.chat_message("assistant"): st.markdown(response)
 
@@ -86,9 +113,10 @@ with tab2:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
     if user_input2 := st.chat_input("Cola aqui a mensagem que recebeste..."):
+        prompt2 = translate_text(user_input2, "pt") if st.session_state["lang"] != "pt" else user_input2
         st.session_state.chat2.append({"role": "user", "content": user_input2})
         with st.chat_message("user"): st.markdown(user_input2)
-        response2 = chat_response(user_input2, "És um especialista em comunicação amorosa. Ajuda a criar uma resposta empática, romântica e natural.")
+        response2 = chat_response(prompt2, "És um especialista em comunicação amorosa. Ajuda a criar uma resposta empática, romântica e natural.", st.session_state["lang"])
         st.session_state.chat2.append({"role": "assistant", "content": response2})
         with st.chat_message("assistant"): st.markdown(response2)
 
