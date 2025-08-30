@@ -12,7 +12,7 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # PayPal config
 paypalrestsdk.configure({
-    "mode": "sandbox",  # change to "live" for production
+    "mode": "sandbox",
     "client_id": st.secrets["PAYPAL_CLIENT_ID"],
     "client_secret": st.secrets["PAYPAL_CLIENT_SECRET"]
 })
@@ -76,16 +76,19 @@ st.title(translate_text("💘 Love Advice & Personalized AI Services", language)
 st.markdown(translate_text(
     "Welcome! This app offers 4 unique services to help with love, communication, and visualization of your future family.", language))
 
-# --- Tabs as Services ---
-tab1, tab2, tab3, tab4 = st.tabs([
-    translate_text("💌 Love Advice Chat", language),
-    translate_text("💬 Message Reply Suggestions", language),
-    translate_text("✨ Discover Your Soulmate", language),
-    translate_text("👶 Visualize Your Children", language)
-])
+# --- Mobile-friendly "tabs" ---
+service = st.radio(
+    translate_text("Select a service", language),
+    options=[
+        translate_text("💌 Love Advice Chat", language),
+        translate_text("💬 Message Reply Suggestions", language),
+        translate_text("✨ Discover Your Soulmate", language),
+        translate_text("👶 Visualize Your Children", language)
+    ]
+)
 
-# --- Tab 1: Love Advice Chat ---
-with tab1:
+# --- Service 1: Love Advice Chat ---
+if service == translate_text("💌 Love Advice Chat", language):
     st.subheader(translate_text("Get personalized love advice from our AI therapist.", language))
     if "chat1" not in st.session_state:
         st.session_state.chat1 = []
@@ -105,8 +108,8 @@ with tab1:
         with st.chat_message("assistant"):
             st.markdown(response)
 
-# --- Tab 2: Reply Suggestions ---
-with tab2:
+# --- Service 2: Message Reply Suggestions ---
+elif service == translate_text("💬 Message Reply Suggestions", language):
     st.subheader(translate_text("Paste a message and get expert reply suggestions.", language))
     if "chat2" not in st.session_state:
         st.session_state.chat2 = []
@@ -126,8 +129,8 @@ with tab2:
         with st.chat_message("assistant"):
             st.markdown(response2)
 
-# --- Tab 3: Soulmate ---
-with tab3:
+# --- Service 3: Discover Soulmate ---
+elif service == translate_text("✨ Discover Your Soulmate", language):
     st.subheader(translate_text("Discover your soulmate and see a personalized AI drawing.", language))
     st.markdown(translate_text("Fill in your details and upload a selfie to generate your soulmate.", language))
 
@@ -151,8 +154,8 @@ with tab3:
         img = Image.open(selfie)
         st.image(img, caption="(Your selfie uploaded)")
 
-# --- Tab 4: Visualize Children ---
-with tab4:
+# --- Service 4: Visualize Children ---
+elif service == translate_text("👶 Visualize Your Children", language):
     st.subheader(translate_text("Visualize how your future children might look.", language))
     st.markdown(translate_text("Upload 3 photos of yourself and 3 photos of the other person.", language))
 
