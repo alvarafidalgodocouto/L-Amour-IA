@@ -131,10 +131,6 @@ elif service == translate_text("💬 Message Reply Suggestions", language):
             st.markdown(response2)
 
 # --- Service 3: Discover Soulmate ---
-<script 
-  src="https://www.paypal.com/sdk/js?client-id=BAAu6A13xlYvny0xYaqmU8-ygiMQZWIcRlZeNPdtVE5x1G62MLPmq255iZrmgF4ZRNZDcuinn9DfurjnrE&components=hosted-buttons&disable-funding=venmo&currency=EUR">
-</script>
-
 <div id="paypal-container-983TUJ78R47N4"></div>
 <script>
   paypal.HostedButtons({
