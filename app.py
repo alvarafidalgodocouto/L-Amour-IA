@@ -131,12 +131,6 @@ elif service == translate_text("💬 Message Reply Suggestions", language):
             st.markdown(response2)
 
 # --- Service 3: Discover Soulmate ---
-<div id="paypal-container-983TUJ78R47N4"></div>
-<script>
-  paypal.HostedButtons({
-    hostedButtonId: "983TUJ78R47N4",
-  }).render("#paypal-container-983TUJ78R47N4")
-</script>
 elif service == translate_text("✨ Discover Your Soulmate", language):
     st.subheader(translate_text("Discover your soulmate and see a personalized AI drawing.", language))
     st.markdown(translate_text("Fill in your details and upload a selfie to generate your soulmate.", language))
@@ -162,12 +156,6 @@ elif service == translate_text("✨ Discover Your Soulmate", language):
         st.image(img, caption="(Your selfie uploaded)")
 
 # --- Service 4: Visualize Children ---
-<div id="paypal-container-RUKUV8Z8SB5DL"></div>
-<script>
-  paypal.HostedButtons({
-    hostedButtonId: "RUKUV8Z8SB5DL",
-  }).render("#paypal-container-RUKUV8Z8SB5DL")
-</script>
 
 elif service == translate_text("👶 Visualize Your Children", language):
     st.subheader(translate_text("Visualize how your future children might look.", language))
